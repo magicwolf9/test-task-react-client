@@ -30,20 +30,25 @@ export default {
                 const usersList = await users.getUsers();
                 this.next(OK, usersList);
             } catch (err) {
-                this.next(LOADING_ERROR, {...err, message: 'Что-то пошло не так'});
+                this.next(LOADING_ERROR, {...err, message: 'Что-то пошло не так, попробуйте позже'});
             }
         }
     },
     selectors: (slice, createSelector, hasProps) => ({
         loading() {
             return slice(users => {
-                return users.state === LOADING
+                return users.state === LOADING;
             });
         },
         loadingError() {
             return slice(users => {
-                return users.state === LOADING_ERROR
+                return users.state === LOADING_ERROR;
             });
+        },
+        initial() {
+            return slice(auth => {
+                return auth.state === INITIAL;
+            })
         },
     })
 }
